@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "681431180829",
+    "project_id": "eksplora-cf8c1",
+    "storage_bucket": "eksplora-cf8c1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:681431180829:android:4c554587777df012efc8f4",
+        "android_client_info": {
+          "package_name": "com.eksplora.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsupCFOJIPjthqJiFCK0LlIXGrC8j1I1g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
