@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MyIconButton extends StatelessWidget {
-  final IconData icon;
+  final Widget icon; // Ubah dari IconData ke Widget
   final VoidCallback pressed;
   const MyIconButton({super.key, required this.icon, required this.pressed});
 
@@ -9,14 +9,12 @@ class MyIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       style: IconButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         backgroundColor: const Color(0xffE2E2E2),
-        fixedSize: const Size(50, 50)
+        fixedSize: const Size(50, 50),
       ),
       onPressed: pressed,
-      icon: Icon(icon),
+      icon: icon, // Langsung gunakan Widget icon
     );
   }
 }

@@ -1,97 +1,58 @@
 import 'package:flutter/material.dart';
-import 'package:heroicons/heroicons.dart';
-import 'package:eksplora/constant/constant.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:eksplora/screen/my_home_screen.dart';
+import 'package:eksplora/screen/cart_screen.dart';
+import 'package:eksplora/screen/profile_screen.dart';
+import 'package:eksplora/constant/constant.dart';
+import 'package:eksplora/screen/history_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 0;
-  late final List<Widget> page;
-  @override
-  void initState() {
-    page = [
-      const MyHomeScreen(),
-      navBarPage(HeroIcons.shoppingCart),
-      navBarPage(HeroIcons.user),
-    ];
 
-    super.initState();
-  }
+  final List<Widget> pages = [
+    MyHomeScreen(),
+    CartScreen(),
+    HistoryScreen(),
+    ProfileScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: secondColor,
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: secondColor,
-        elevation: 0,
-        iconSize: 28,
-        currentIndex: selectedIndex,
-        selectedItemColor: primaryColor,
-        unselectedItemColor: Colors.grey,
-        type: BottomNavigationBarType.fixed,
-        selectedLabelStyle: const TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.w600,
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      body: pages[selectedIndex],
+      bottomNavigationBar: Container(
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 7),
+          child: GNav(
+            backgroundColor: Colors.white,
+            color: Colors.black,
+            activeColor: Colors.white,
+            tabBackgroundColor: primaryColor,
+            gap: 15,
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+            onTabChange: (index) {
+              setState(() {
+                selectedIndex = index;
+              });
+            },
+            tabs: const [
+              GButton(icon: Icons.home, text: 'Beranda'),
+              GButton(icon: Icons.shopping_cart, text: 'Keranjang'),
+              GButton(icon: Icons.archive_sharp, text: 'Riwayat'),
+              GButton(icon: Icons.person, text: 'Akun Saya'),
+            ],
+          ),
         ),
-        unselectedLabelStyle: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-        ),
-        onTap: (value) {
-          setState(() {
-            selectedIndex = value;
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: HeroIcon(
-              selectedIndex == 0 ? HeroIcons.home : HeroIcons.home,
-            ),
-            label: "Beranda",
-          ),
-          BottomNavigationBarItem(
-            icon: HeroIcon(
-              selectedIndex == 1
-                  ? HeroIcons.shoppingCart
-                  : HeroIcons.shoppingCart,
-            ),
-            label: "Keranjang",
-          ),
-          BottomNavigationBarItem(
-            icon: HeroIcon(
-              selectedIndex == 2 ? HeroIcons.user : HeroIcons.user,
-            ),
-            label: "Profile",
-          ),
-        ],
       ),
-      body: page[selectedIndex],
-    );
-  }
-
-  navBarPage(dynamic iconName) {
-    return Center(
-      child:
-          iconName
-                  is HeroIcons // Jika pakai HeroIcons
-              ? HeroIcon(
-                iconName,
-                size: 100,
-                color: primaryColor,
-                style: HeroIconStyle.solid, // Bisa diubah ke outline
-              )
-              : Icon(
-                iconName, // Jika pakai Iconsax atau Material Icons
-                size: 100,
-                color: primaryColor,
-              ),
     );
   }
 }

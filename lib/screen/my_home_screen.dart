@@ -1,3 +1,4 @@
+import 'package:eksplora/Auth/auth_service.dart';
 import 'package:eksplora/constant/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:eksplora/Widget/my_icon_button.dart';
@@ -5,6 +6,8 @@ import 'package:heroicons/heroicons.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:eksplora/Widget/banner.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:eksplora/screen/notification_screen.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class MyHomeScreen extends StatefulWidget {
   const MyHomeScreen({super.key});
@@ -14,6 +17,14 @@ class MyHomeScreen extends StatefulWidget {
 }
 
 class _MyHomeScreenState extends State<MyHomeScreen> {
+  //* get auth service
+  final authService = AuthService();
+
+  List<Map<String, dynamic>>? assignments;
+  Map<String, dynamic>? userData;
+  String? name;
+  String? email;
+
   String category = "All"; // Default kategori
   final supabase = Supabase.instance.client;
   List<Map<String, dynamic>> categoriesItems = [];
@@ -21,7 +32,32 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
   @override
   void initState() {
     super.initState();
+    getUserData();
+    Map result = authService.getUserCurrentEmail();
+    name = result['name'];
+    email = result['email'];
+    getAssignments();
+
     fetchCategories(); // Ambil kategori saat pertama kali
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  Future<void> getUserData() async {
+    final response = await authService.getCurrentUserData();
+    setState(() {
+      userData = response;
+    });
+  }
+
+  void getAssignments() async {
+    setState(() {
+      // Indicate loading state
+      assignments = null;
+    });
   }
 
   Future<void> fetchCategories() async {
@@ -57,8 +93,9 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:
-          Colors.white, // Ganti secondColor jika belum didefinisikan
+      backgroundColor: Color(
+        0xffFAFAFA,
+      ), // Ganti secondColor jika belum didefinisikan
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -66,8 +103,88 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                headerParts(), // Pastikan function ini ada
-                mySearchBar(), // Pastikan function ini ada
+                Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 20),
+                        const Text(
+                          "Selamat datang!",
+                          style: TextStyle(
+                            fontFamily: "Inter",
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 0, 0, 0),
+                          ),
+                        ),
+                        Text(
+                          "Halo, ${userData != null ? userData!['full_name'] : '-'}",
+                          style: const TextStyle(
+                            fontFamily: "Inter",
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xff4D4D4D),
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
+                    Builder(
+                      builder:
+                          (context) => MyIconButton(
+                            icon: HeroIcon(
+                              HeroIcons.bell,
+                              style: HeroIconStyle.solid,
+                              color: Color(0xffA8A8A8),
+                            ),
+                            pressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => const NotificationScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                    ),
+                  ],
+                ), // Pastikan function ini ada
+                //* Tombol Search di HomeScreen
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 22),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      prefixIcon: Padding(
+                        padding: EdgeInsets.all(
+                          12,
+                        ), // Sesuaikan padding agar ikon tidak terlalu besar
+                        child: SvgPicture.asset(
+                          'assets/icon/search.svg',
+                          width: 20,
+                          height: 20,
+                        ),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: InputBorder.none,
+                      hintText: "Cari di sini...",
+                      hintStyle: const TextStyle(color: Colors.grey),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: thirdColor),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(color: thirdColor),
+                      ),
+                    ),
+                  ),
+                ), // Pastikan function ini ada
                 const BannerToExplore(), // Pastikan ini widget yang valid
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 20),
@@ -193,35 +310,30 @@ Padding mySearchBar() {
     padding: const EdgeInsets.symmetric(vertical: 22),
     child: TextField(
       decoration: InputDecoration(
+        prefixIcon: Padding(
+          padding: EdgeInsets.all(
+            12,
+          ), // Sesuaikan padding agar ikon tidak terlalu besar
+          child: SvgPicture.asset(
+            'assets/icon/search.svg',
+            width: 20,
+            height: 20,
+          ),
+        ),
         filled: true,
-        prefixIcon: const HeroIcon(HeroIcons.magnifyingGlass),
         fillColor: Colors.white,
         border: InputBorder.none,
         hintText: "Cari di sini...",
         hintStyle: const TextStyle(color: Colors.grey),
         enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: thirdColor),
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
+          borderSide: const BorderSide(color: thirdColor),
         ),
       ),
     ),
-  );
-}
-
-// ** Header bagian atas (nama + icon notifikasi)**
-Row headerParts() {
-  return Row(
-    children: [
-      const Text(
-        "Hi, Risyad",
-        style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, height: 1),
-      ),
-      const Spacer(),
-      MyIconButton(icon: Iconsax.notification, pressed: () {}),
-    ],
   );
 }

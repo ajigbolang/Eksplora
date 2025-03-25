@@ -1,4 +1,9 @@
+import 'package:eksplora/screen/auth_login.dart';
 import 'package:eksplora/screen/home_screen.dart';
+import 'package:eksplora/screen/splash_screen.dart';
+import 'package:eksplora/screen/cart_screen.dart';
+import 'package:eksplora/screen/admin/dashboard_screen.dart';
+import 'package:eksplora/screen/admin/admin_home_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/material.dart';
 
@@ -23,6 +28,6 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'Eksplora', home: HomeScreen());
+    return MaterialApp(title: 'Eksplora', home: AuthLogin());
   }
 }

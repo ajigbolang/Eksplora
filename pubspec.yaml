@@ -32,6 +32,8 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.8
+  google_nav_bar: ^5.0.7
+  image_picker: ^1.0.4
   firebase_core: ^3.4.1
   cloud_firestore: ^5.4.1
   heroicons_flutter: ^0.4.0
@@ -39,7 +41,7 @@ dependencies:
   flutter_gen: any
   build_runner: ^2.4.6
   flutter_gen_runner: ^5.4.0
-  flutter_svg: ^2.0.9
+  flutter_svg: ^2.0.10+1
   introduction_screen: ^3.1.16
   get: ^4.7.1
   provider: ^6.1.2
@@ -97,17 +99,24 @@ flutter:
         - asset: fonts/Inter_18pt-Italic.ttf
 
   assets:
+    - assets/icon/search.svg
+    - assets/icon/headset-solid 1.svg
+    - assets/image/tenda.png
+    - assets/icon/whatsapp.svg
+    - assets/icon/instagram.svg
     - assets/icon/logo.svg
     - assets/icon/intro1.svg
     - assets/icon/intro2.svg
     - assets/icon/intro3.svg
-    - assets/icon/lock.svg
-    - assets/icon/profile.svg
-    - assets/icon/eye.svg
+    - assets/icon/lock-closed.svg
+    - assets/icon/lock-open.svg
+    - assets/icon/eye-open.svg
+    - assets/icon/eye-close.svg
     - assets/icon/google.svg
-    - assets/icon/phone.svg
-    - assets/icon/email.svg
+    - assets/icon/user.svg
+    - assets/icon/mail.svg
     - assets/icon/banner.svg
+    - assets/icon/phone.svg
     - assets/image/account_success.png
     - assets/image/banner.png
   #         style: italic

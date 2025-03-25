@@ -1,9 +1,9 @@
 import 'package:eksplora/constant/constant.dart';
+import 'package:eksplora/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:eksplora/screen/auth_login.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:eksplora/screen/create_account_success.dart';
 
 class AuthRegister extends StatefulWidget {
   const AuthRegister({super.key});
@@ -88,14 +88,15 @@ class _AuthRegisterState extends State<AuthRegister> {
                           color: Color(0xff1F5460),
                         ),
                       ),
+                      SizedBox(height: 10),
                       Text(
                         "Silahkan daftar untuk menggunakan aplikasi!",
                         style: TextStyle(
                           letterSpacing: -0.2,
                           fontFamily: "Inter",
-                          fontSize: 12,
+                          fontSize: 14,
                           fontWeight: FontWeight.w500,
-                          color: Color.fromARGB(225, 77, 77, 77),
+                          color: thirdColor,
                         ),
                       ),
                       SizedBox(height: 49),
@@ -107,19 +108,16 @@ class _AuthRegisterState extends State<AuthRegister> {
                           labelStyle: TextStyle(
                             fontFamily: "Inter",
                             fontSize: 15,
-                            color: Color.fromARGB(225, 128, 128, 128),
+                            color: thirdColor,
                           ),
                           prefixIcon: Padding(
                             padding: EdgeInsets.all(
                               12,
                             ), // Sesuaikan padding agar ikon tidak terlalu besar
                             child: SvgPicture.asset(
-                              'assets/icon/profile.svg',
+                              'assets/icon/user.svg',
                               width: 20,
                               height: 20,
-                              color: Color(
-                                0xfff1F5460,
-                              ), // Sesuaikan warna jika perlu
                             ),
                           ),
                           border: OutlineInputBorder(
@@ -141,19 +139,16 @@ class _AuthRegisterState extends State<AuthRegister> {
                           labelStyle: TextStyle(
                             fontFamily: "Inter",
                             fontSize: 15,
-                            color: Color.fromARGB(225, 128, 128, 128),
+                            color: thirdColor,
                           ),
                           prefixIcon: Padding(
                             padding: EdgeInsets.all(
                               12,
                             ), // Sesuaikan padding agar ikon tidak terlalu besar
                             child: SvgPicture.asset(
-                              'assets/icon/profile.svg',
+                              'assets/icon/user.svg',
                               width: 20,
                               height: 20,
-                              color: Color(
-                                0xfff1F5460,
-                              ), // Sesuaikan warna jika perlu
                             ),
                           ),
                           border: OutlineInputBorder(
@@ -175,19 +170,16 @@ class _AuthRegisterState extends State<AuthRegister> {
                           labelStyle: TextStyle(
                             fontFamily: "Inter",
                             fontSize: 15,
-                            color: Color.fromARGB(225, 128, 128, 128),
+                            color: thirdColor,
                           ),
                           prefixIcon: Padding(
                             padding: EdgeInsets.all(
                               12,
                             ), // Sesuaikan padding agar ikon tidak terlalu besar
                             child: SvgPicture.asset(
-                              'assets/icon/email.svg',
+                              'assets/icon/mail.svg',
                               width: 20,
                               height: 20,
-                              color: Color(
-                                0xfff1F5460,
-                              ), // Sesuaikan warna jika perlu
                             ),
                           ),
                           border: OutlineInputBorder(
@@ -209,7 +201,7 @@ class _AuthRegisterState extends State<AuthRegister> {
                           labelStyle: TextStyle(
                             fontFamily: "Inter",
                             fontSize: 15,
-                            color: Color.fromARGB(225, 128, 128, 128),
+                            color: thirdColor,
                           ),
                           prefixIcon: Padding(
                             padding: EdgeInsets.all(
@@ -219,9 +211,6 @@ class _AuthRegisterState extends State<AuthRegister> {
                               'assets/icon/phone.svg',
                               width: 20,
                               height: 20,
-                              color: Color(
-                                0xfff1F5460,
-                              ), // Sesuaikan warna jika perlu
                             ),
                           ),
                           border: OutlineInputBorder(
@@ -243,7 +232,7 @@ class _AuthRegisterState extends State<AuthRegister> {
                           labelStyle: TextStyle(
                             fontFamily: "Inter",
                             fontSize: 15,
-                            color: Color.fromARGB(225, 128, 128, 128),
+                            color: thirdColor,
                           ),
                           prefixIcon: Padding(
                             padding: EdgeInsets.all(
@@ -253,9 +242,7 @@ class _AuthRegisterState extends State<AuthRegister> {
                               'assets/icon/lock.svg',
                               width: 20,
                               height: 20,
-                              color: Color(
-                                0xfff1F5460,
-                              ), // Sesuaikan warna jika perlu
+                              color: thirdColor,
                             ),
                           ),
                           suffixIcon: Padding(
@@ -266,9 +253,6 @@ class _AuthRegisterState extends State<AuthRegister> {
                               'assets/icon/eye.svg',
                               width: 20,
                               height: 20,
-                              color: Color(
-                                0xfff1F5460,
-                              ), // Sesuaikan warna jika perlu
                             ),
                           ),
                           border: OutlineInputBorder(
@@ -289,7 +273,7 @@ class _AuthRegisterState extends State<AuthRegister> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => CreateAccountSuccess(),
+                                builder: (context) => HomeScreen(),
                               ),
                             );
                           },
@@ -298,7 +282,7 @@ class _AuthRegisterState extends State<AuthRegister> {
                             foregroundColor: Color.fromARGB(255, 255, 255, 255),
                             minimumSize: Size(
                               double.infinity,
-                              50,
+                              60,
                             ), // Lebar penuh, tinggi 50
                           ),
                           child: Text(

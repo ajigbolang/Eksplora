@@ -14,6 +14,8 @@ class AuthLogin extends StatefulWidget {
 }
 
 class _AuthLoginState extends State<AuthLogin> {
+  bool _isObscured = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +23,7 @@ class _AuthLoginState extends State<AuthLogin> {
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          color: Color(0xffFF6F00),
+          color: primaryColor,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -89,21 +91,22 @@ class _AuthLoginState extends State<AuthLogin> {
                           color: Color(0xff1F5460),
                         ),
                       ),
+                      SizedBox(height: 10),
                       Text(
-                        "Silahkan masuk untuk menggunakan aplikasi!",
+                        "Silakan masuk dan dapatkan bantuan darurat Anda!",
                         style: TextStyle(
                           letterSpacing: -0.2,
                           fontFamily: "Inter",
-                          fontSize: 12,
+                          fontSize: 14,
                           fontWeight: FontWeight.w500,
-                          color: Color.fromARGB(225, 77, 77, 77),
+                          color: thirdColor,
                         ),
                       ),
                       SizedBox(height: 49),
                       TextField(
                         decoration: InputDecoration(
                           filled: false,
-                          labelText: "E-mail",
+                          labelText: "Email",
                           labelStyle: TextStyle(
                             fontFamily: "Inter",
                             fontSize: 15,
@@ -114,16 +117,13 @@ class _AuthLoginState extends State<AuthLogin> {
                               12,
                             ), // Sesuaikan padding agar ikon tidak terlalu besar
                             child: SvgPicture.asset(
-                              'assets/icon/profile.svg',
+                              'assets/icon/mail.svg',
                               width: 20,
                               height: 20,
-                              color: Color(
-                                0xfff1F5460,
-                              ), // Sesuaikan warna jika perlu
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: fourthColor),
+                            borderSide: BorderSide(color: thirdColor),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           focusedBorder: OutlineInputBorder(
@@ -145,56 +145,55 @@ class _AuthLoginState extends State<AuthLogin> {
                       ),
                       SizedBox(height: 15),
                       TextField(
+                        obscureText:
+                            _isObscured, // Sensor atau tampilkan password
                         decoration: InputDecoration(
                           filled: false,
                           labelText: "Kata Sandi",
-                          labelStyle: TextStyle(
+                          labelStyle: const TextStyle(
                             fontFamily: "Inter",
                             fontSize: 15,
-                            color: Color.fromARGB(225, 128, 128, 128),
+                            color: thirdColor,
                           ),
                           prefixIcon: Padding(
-                            padding: EdgeInsets.all(
-                              12,
-                            ), // Sesuaikan padding agar ikon tidak terlalu besar
+                            padding: const EdgeInsets.all(12),
                             child: SvgPicture.asset(
-                              'assets/icon/lock.svg',
+                              'assets/icon/lock-open.svg',
                               width: 20,
                               height: 20,
-                              color: Color(
-                                0xfff1F5460,
-                              ), // Sesuaikan warna jika perlu
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: fourthColor),
+                            borderSide: const BorderSide(color: thirdColor),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               color: Color(0xffFF6F00),
                               width: 2,
                             ),
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          suffixIcon: Padding(
-                            padding: EdgeInsets.all(
-                              12,
-                            ), // Sesuaikan padding agar ikon tidak terlalu besar
-                            child: SvgPicture.asset(
-                              'assets/icon/eye.svg',
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _isObscured = !_isObscured;
+                              });
+                            },
+                            icon: SvgPicture.asset(
+                              _isObscured
+                                  ? 'assets/icon/eye-close.svg'
+                                  : 'assets/icon/eye-open.svg',
                               width: 20,
                               height: 20,
-                              color: Color(
-                                0xfff1F5460,
-                              ), // Sesuaikan warna jika perlu
+                              color: thirdColor,
                             ),
                           ),
                           border: OutlineInputBorder(
                             borderSide: BorderSide.none,
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          contentPadding: EdgeInsets.symmetric(
+                          contentPadding: const EdgeInsets.symmetric(
                             vertical: 5,
                             horizontal: 15,
                           ),
@@ -215,7 +214,7 @@ class _AuthLoginState extends State<AuthLogin> {
                           foregroundColor: Color.fromARGB(255, 255, 255, 255),
                           minimumSize: Size(
                             double.infinity,
-                            50,
+                            60,
                           ), // Lebar penuh, tinggi 50
                         ),
                         child: Text(
@@ -236,7 +235,8 @@ class _AuthLoginState extends State<AuthLogin> {
                             style: TextStyle(
                               fontFamily: "Inter",
                               fontSize: 12,
-                              color: Color(0xffA8A8A8),
+                              fontWeight: FontWeight.w700,
+                              color: thirdColor,
                             ),
                           ),
                           GestureDetector(
@@ -253,51 +253,13 @@ class _AuthLoginState extends State<AuthLogin> {
                               style: TextStyle(
                                 fontFamily: "Inter",
                                 fontSize: 12,
-                                color: Color(0xfff1F5460),
+                                color: primaryColor,
+                                fontWeight: FontWeight.w700,
                                 decoration: TextDecoration.underline,
                               ),
                             ),
                           ),
                         ],
-                      ),
-                      SizedBox(height: 15),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Divider(thickness: 1, color: primaryColor),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Text(
-                              "Atau",
-                              style: TextStyle(color: Colors.black),
-                            ),
-                          ),
-                          Expanded(
-                            child: Divider(thickness: 1, color: primaryColor),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 15),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: ElevatedButton.icon(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(225, 255, 255, 255),
-                            foregroundColor: Color.fromARGB(255, 0, 0, 0),
-                            minimumSize: Size(double.infinity, 50),
-                          ),
-                          icon: SvgPicture.asset(
-                            "assets/icon/google.svg",
-                            width: 20,
-                            height: 20,
-                          ),
-                          label: Text(
-                            "Masuk dengan Google",
-                            style: TextStyle(fontFamily: "Inter", fontSize: 13),
-                          ),
-                        ),
                       ),
                     ],
                   ),
