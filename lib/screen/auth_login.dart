@@ -1,4 +1,5 @@
-import 'package:eksplora/screen/home_screen.dart';
+import 'package:eksplora/Auth/auth_gate.dart';
+import 'package:eksplora/Auth/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:heroicons/heroicons.dart';
@@ -14,6 +15,34 @@ class AuthLogin extends StatefulWidget {
 }
 
 class _AuthLoginState extends State<AuthLogin> {
+  //*Mengambil data dari auth_service
+  final authService = AuthService();
+
+  //*Text controller
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  //*Login button function/pressed
+  void login() async {
+    //prepare data
+    final email = _emailController.text;
+    final password = _passwordController.text;
+
+    //atempt login
+    try {
+      await authService.signInWithEmailPassword(email, password);
+      Navigator.of(
+        context,
+      ).pushReplacement(MaterialPageRoute(builder: (context) => AuthGate()));
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.toString())));
+      }
+    }
+  }
+
   bool _isObscured = true;
 
   @override
@@ -104,6 +133,7 @@ class _AuthLoginState extends State<AuthLogin> {
                       ),
                       SizedBox(height: 49),
                       TextField(
+                        controller: _emailController,
                         decoration: InputDecoration(
                           filled: false,
                           labelText: "Email",
@@ -145,6 +175,7 @@ class _AuthLoginState extends State<AuthLogin> {
                       ),
                       SizedBox(height: 15),
                       TextField(
+                        controller: _passwordController,
                         obscureText:
                             _isObscured, // Sensor atau tampilkan password
                         decoration: InputDecoration(
@@ -201,14 +232,7 @@ class _AuthLoginState extends State<AuthLogin> {
                       ),
                       SizedBox(height: 50),
                       ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HomeScreen(),
-                            ),
-                          );
-                        },
+                        onPressed: login,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xffff6f00),
                           foregroundColor: Color.fromARGB(255, 255, 255, 255),

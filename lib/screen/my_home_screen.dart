@@ -33,9 +33,9 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
   void initState() {
     super.initState();
     getUserData();
-    Map result = authService.getUserCurrentEmail();
-    name = result['name'];
-    email = result['email'];
+    //Map result = authService.getUserCurrentEmail();
+    //name = result['name'];
+    //email = result['email'];
     getAssignments();
 
     fetchCategories(); // Ambil kategori saat pertama kali

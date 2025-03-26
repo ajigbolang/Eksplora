@@ -9,23 +9,41 @@ class AuthService {
     String email,
     String password,
   ) async {
-    return await _supabase.auth.signInWithPassword(
-      password: password,
-      email: email,
-    );
+    try {
+      final response = await _supabase.auth.signInWithPassword(
+        email: email,
+        password: password,
+      );
+      return response;
+    } catch (e) {
+      throw AuthException(
+        e.toString(),
+      ); // Lempar error biar bisa ditangkap di UI
+    }
   }
 
-  // Sign up session
+  //Sign UP session
   Future<AuthResponse> signUpWithEmailPassword(
     String email,
     String password,
     String name,
+    String username,
+    String? phone,
   ) async {
-    return await _supabase.auth.signUp(
-      email: email,
-      password: password,
-      data: {"Name": name},
-    );
+    try {
+      final response = await _supabase.auth.signUp(
+        email: email,
+        password: password,
+        data: {
+          "name": name,
+          "username": username,
+          if (phone != null) "phone": phone,
+        },
+      );
+      return response;
+    } catch (e) {
+      throw AuthException(e.toString()); //jika ada error maka akan muncul di UI
+    }
   }
 
   // LogOut session
@@ -33,13 +51,12 @@ class AuthService {
     await _supabase.auth.signOut();
   }
 
-  //Get user email
-  Map getUserCurrentEmail() {
-    final session = _supabase.auth.currentSession;
-    final user = session?.user;
-    String? email = user?.email;
-    String? name = user?.userMetadata!['Name'];
-    return {email: email, name: name};
+  // Get user email
+  Map<String, String?> getUserCurrentEmail() {
+    final user = _supabase.auth.currentUser;
+    if (user == null) return {};
+
+    return {'email': user.email, 'name': user.userMetadata?['Name']};
   }
 
   Future<Map<String, dynamic>?> getCurrentUserData() async {
@@ -50,7 +67,7 @@ class AuthService {
     return {
       'id': user.id,
       'email': user.email,
-      'full_name': user.userMetadata?['full_name'] ?? '-',
+      'full_name': user.userMetadata?['Name'] ?? '-',
       'created_at': user.createdAt,
     };
   }
@@ -60,7 +77,7 @@ class AuthService {
     if (user == null) return;
 
     final response = await _supabase.auth.updateUser(
-      UserAttributes(data: {'full_name': newName}),
+      UserAttributes(data: {'Name': newName}), //sesuai dengan key di signUp
     );
 
     if (response.user != null) {

@@ -1,3 +1,4 @@
+import 'package:eksplora/Auth/auth_service.dart';
 import 'package:eksplora/constant/constant.dart';
 import 'package:eksplora/screen/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,63 @@ class AuthRegister extends StatefulWidget {
 }
 
 class _AuthRegisterState extends State<AuthRegister> {
+  //get auth service
+  final authService = AuthService();
+
+  // Text Controllers untuk Register
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+
+  //Sign up button/pressed
+  void signUp() async {
+    // Ambil data dari TextControllers
+    final name = _nameController.text.trim();
+    final username = _usernameController.text.trim();
+    final email = _emailController.text.trim();
+    final phone = _phoneController.text.trim();
+    final password = _passwordController.text.trim();
+    final confirmPassword = _confirmPasswordController.text.trim();
+
+    // Cek konfirmasi password apakah sesuai
+    if (password != confirmPassword) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Password tidak sesuai")));
+      return;
+    }
+
+    try {
+      // Panggil AuthService untuk registrasi
+      await authService.signUpWithEmailPassword(
+        email,
+        password,
+        name,
+        username,
+        phone.isNotEmpty ? phone : null, // Pastikan phone opsional
+      );
+
+      // Jika sukses, kembali ke halaman sebelumnya (login)
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Registrasi berhasil! Silakan login.")),
+        );
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      // Tangani error
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Error: $e")));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,8 +157,9 @@ class _AuthRegisterState extends State<AuthRegister> {
                           color: thirdColor,
                         ),
                       ),
-                      SizedBox(height: 49),
+                      SizedBox(height: 35),
                       TextField(
+                        controller: _nameController,
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Color.fromARGB(225, 242, 242, 242),
@@ -132,6 +191,7 @@ class _AuthRegisterState extends State<AuthRegister> {
                       ),
                       SizedBox(height: 15),
                       TextField(
+                        controller: _usernameController,
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Color.fromARGB(225, 242, 242, 242),
@@ -163,6 +223,7 @@ class _AuthRegisterState extends State<AuthRegister> {
                       ),
                       SizedBox(height: 15),
                       TextField(
+                        controller: _emailController,
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Color.fromARGB(225, 242, 242, 242),
@@ -194,6 +255,7 @@ class _AuthRegisterState extends State<AuthRegister> {
                       ),
                       SizedBox(height: 15),
                       TextField(
+                        controller: _phoneController,
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Color.fromARGB(225, 242, 242, 242),
@@ -225,6 +287,7 @@ class _AuthRegisterState extends State<AuthRegister> {
                       ),
                       SizedBox(height: 15),
                       TextField(
+                        controller: _passwordController,
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Color.fromARGB(225, 242, 242, 242),
@@ -239,7 +302,50 @@ class _AuthRegisterState extends State<AuthRegister> {
                               12,
                             ), // Sesuaikan padding agar ikon tidak terlalu besar
                             child: SvgPicture.asset(
-                              'assets/icon/lock.svg',
+                              'assets/icon/lock-open.svg',
+                              width: 20,
+                              height: 20,
+                              color: thirdColor,
+                            ),
+                          ),
+                          suffixIcon: Padding(
+                            padding: EdgeInsets.all(
+                              12,
+                            ), // Sesuaikan padding agar ikon tidak terlalu besar
+                            child: SvgPicture.asset(
+                              'assets/icon/eye.svg',
+                              width: 20,
+                              height: 20,
+                            ),
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 5,
+                            horizontal: 15,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      TextField(
+                        controller: _confirmPasswordController,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Color.fromARGB(225, 242, 242, 242),
+                          labelText: "Konfirmasi Kata Sandi",
+                          labelStyle: TextStyle(
+                            fontFamily: "Inter",
+                            fontSize: 15,
+                            color: thirdColor,
+                          ),
+                          prefixIcon: Padding(
+                            padding: EdgeInsets.all(
+                              12,
+                            ), // Sesuaikan padding agar ikon tidak terlalu besar
+                            child: SvgPicture.asset(
+                              'assets/icon/lock-closed.svg',
                               width: 20,
                               height: 20,
                               color: thirdColor,
@@ -269,14 +375,7 @@ class _AuthRegisterState extends State<AuthRegister> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => HomeScreen(),
-                              ),
-                            );
-                          },
+                          onPressed: signUp,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xffff6f00),
                             foregroundColor: Color.fromARGB(255, 255, 255, 255),
